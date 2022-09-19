@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders homepage unchanged 1`] = `
+<div>
+  <div>
+    <h2>
+      Possibly a splash screen before redirect to posts/login
+    </h2>
+    <a
+      href="/posts"
+    >
+      Posts
+    </a>
+  </div>
+</div>
+`;

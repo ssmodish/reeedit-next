@@ -7,7 +7,7 @@ export type Color = 'primary' | 'secondary' | 'danger' | 'warning'
 export type Props = {
   children: string
   color?: Color
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
 export const getColors = (color?: Color): SerializedStyles => {
