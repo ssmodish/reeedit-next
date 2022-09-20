@@ -1,17 +1,24 @@
 import type { NextPage } from 'next'
 
 import { useRouter } from 'next/router'
+import { getPostById } from '../../../dummy-data'
 
 const Post: NextPage = () => {
   const router = useRouter()
 
-  console.log(router.query)
+  const [post] = getPostById(router.query.id)
 
   return (
     <div>
-      <h1>Post:</h1>
-      <h2>Shows a specific post</h2>
-      PostId: {router.query.id}
+      <em>| {post.topics.map((topic) => topic + ' | ')}</em>
+      <h1>{post.title}</h1>
+      <h2>Author: {post.createdBy}</h2>
+      <p>Created: {post.createdAt}</p>
+      <p>Updated: {post.lastUpdated}</p>
+      <p>{post.body}</p>
+      <p>
+        {post.votes.up} upvotes | {post.votes.down} downvotes
+      </p>
     </div>
   )
 }

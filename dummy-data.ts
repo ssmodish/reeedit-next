@@ -1,4 +1,6 @@
-const DUMMY_POSTS = {
+import { PostInterface } from './components/Post/Post.interface'
+
+const DUMMY_DATA = {
   posts: [
     {
       id: 'QPichBrG9QGBu3RAc7ipx',
@@ -55,12 +57,10 @@ const DUMMY_POSTS = {
   ],
 }
 
-export function getAllPosts() {
-  return DUMMY_POSTS
+export function getAllPosts(): PostInterface[] {
+  return DUMMY_DATA.posts
 }
 
-export function getPostById(id) {
-  return DUMMY_POSTS.filter((post) => {
-    return post.id === id
-  })
+export function getPostById(id: string) {
+  return DUMMY_DATA.posts.filter((post) => post.id === id)
 }

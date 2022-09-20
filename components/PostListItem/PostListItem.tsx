@@ -7,12 +7,10 @@ const PostListItem = (props: PostInterface) => {
 
   const postLink = `/posts/${id}`
 
-  console.log(postLink)
-
   return (
     <div>
       <p>
-        Upvotes: {votes.up} ◻ Downvotes: {votes.down}
+        <em>| {topics.map((topic) => topic + ' | ')}</em>
       </p>
       <h2>Title: {title}</h2>
       <p>
@@ -20,8 +18,12 @@ const PostListItem = (props: PostInterface) => {
       </p>
       <p>Last Update: {lastUpdated}</p>
       <p>{body}</p>
-      <p>TOPICS{topics.map((topic) => ' | ' + topic)}</p>
-      <Link href={postLink}>View Post</Link>
+      <p>
+        {votes.up} upvotes | {votes.down} downvotes
+      </p>
+      <Link href={postLink}>
+        <button>View Post</button>
+      </Link>
       <hr />
     </div>
   )
