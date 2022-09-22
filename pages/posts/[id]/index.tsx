@@ -10,7 +10,7 @@ const Post: NextPage = () => {
 
   return (
     <div>
-      <em>| {post.topics.map((topic) => topic + ' | ')}</em>
+      <em>| {post.topics && post.topics?.map((topic) => topic + ' | ')}</em>
       <h1>{post.title}</h1>
       <h2>Author: {post.createdBy}</h2>
       <p>Created: {post.createdAt}</p>

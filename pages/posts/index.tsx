@@ -25,6 +25,9 @@ export async function getStaticProps() {
     props: {
       ...data,
     },
+    revalidate: 10,
+    // notFound: Boolean
+    // redirect: { destination: 'new_route' }
   }
 }
 
