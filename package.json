@@ -11,6 +11,7 @@
     "build-storybook": "build-storybook -s ./public",
     "test": "jest",
     "test:ci": "jest --ci",
+    "pre-commit": "pnpm run lint",
     "prepare": "husky install"
   },
   "dependencies": {
