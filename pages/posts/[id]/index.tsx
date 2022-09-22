@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 import { useRouter } from 'next/router'
-import { getPostById } from '../../../dummy-data'
+import { getPostById } from '../../../data/dummy-data'
 
 const Post: NextPage = () => {
   const router = useRouter()

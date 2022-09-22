@@ -3,7 +3,8 @@ import { PostInterface } from '../Post/Post.interface'
 import Link from 'next/link'
 
 const PostListItem = (props: PostInterface) => {
-  const { id, title, topics, body, createdBy, createdAt, votes, lastUpdated } = props
+  const { id, title, topics, body, createdBy, createdAt, votes, lastUpdated } =
+    props
 
   const postLink = `/posts/${id}`
 

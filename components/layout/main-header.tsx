@@ -4,15 +4,15 @@ const MainHeader = () => {
   return (
     <header>
       <div>
-        <Link href='/'>REEEDIT</Link>
+        <Link href="/">REEEDIT</Link>
       </div>
       <nav>
         <ul>
           <li>
-            <Link href='/posts'>Posts</Link>
+            <Link href="/posts">Posts</Link>
           </li>
           <li>
-            <Link href='/topics'>Topics</Link>
+            <Link href="/topics">Topics</Link>
           </li>
         </ul>
       </nav>

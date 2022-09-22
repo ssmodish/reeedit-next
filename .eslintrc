@@ -1,9 +1,17 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:storybook/recommended"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:storybook/recommended",
+    "prettier"
+  ],
   "plugins": ["react", "prettier", "testing-library"],
   "overrides": [
     {
-      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
       "extends": ["plugin:testing-library/react"]
     }
   ],
@@ -13,7 +21,10 @@
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
     "no-undef": "off",
+    "no-unused-vars": "warn",
     "import/no-unresolved": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off"
   }
 }

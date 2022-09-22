@@ -55,7 +55,8 @@ export const Button = styled.button<Props>`
     opacity: 0.9;
   }
   &:active {
-    box-shadow: 0.5vmin 0.5vmin 1vmin #c8d0e7 inset, -0.5vmin -0.5vmin 1vmin #ffffff inset;
+    box-shadow: 0.5vmin 0.5vmin 1vmin #c8d0e7 inset,
+      -0.5vmin -0.5vmin 1vmin #ffffff inset;
   }
 `
 

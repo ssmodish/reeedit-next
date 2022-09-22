@@ -1,11 +1,12 @@
-import type { NextPage } from 'next'
+import path from 'path'
+import * as fs from 'node:fs/promises'
 
-import { getAllPosts } from '../../dummy-data'
+import type { NextPage } from 'next'
 
 import PostList from '../../components/PostList/PostList'
 
-const Posts: NextPage = () => {
-  const posts = getAllPosts()
+const Posts: NextPage = (props) => {
+  const { posts } = props
 
   return (
     <div>
@@ -13,6 +14,18 @@ const Posts: NextPage = () => {
       <PostList posts={posts} />
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), 'data', 'dummy-data.json')
+  const jsonData = await fs.readFile(filePath)
+  const data = JSON.parse(jsonData)
+
+  return {
+    props: {
+      ...data,
+    },
+  }
 }
 
 export default Posts

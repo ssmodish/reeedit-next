@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <h2>Possibly a splash screen before redirect to posts/login</h2>
-      <Link href='/posts'>Posts</Link>
+      <Link href="/posts">Posts</Link>
     </div>
   )
 }
