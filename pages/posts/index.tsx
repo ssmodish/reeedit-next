@@ -1,11 +1,15 @@
 import path from 'path'
 import * as fs from 'node:fs/promises'
 
-import type { NextPage } from 'next'
-
 import PostList from '../../components/PostList/PostList'
 
-const Posts: NextPage = (props) => {
+import { PostInterface } from '../../components/Post/Post.interface'
+
+type Props = {
+  posts: PostInterface[]
+}
+
+const Posts = (props: Props) => {
   const { posts } = props
 
   return (
@@ -18,7 +22,7 @@ const Posts: NextPage = (props) => {
 
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), 'data', 'dummy-data.json')
-  const jsonData = await fs.readFile(filePath)
+  const jsonData = await fs.readFile(filePath, 'utf8')
   const data = JSON.parse(jsonData)
 
   return {

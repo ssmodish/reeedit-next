@@ -1,26 +1,80 @@
-import type { NextPage } from 'next'
+import path from 'path'
+import * as fs from 'node:fs/promises'
 
-import { useRouter } from 'next/router'
-import { getPostById } from '../../../data/dummy-data'
+import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
+import { ParsedUrlQuery } from 'querystring'
+import { PostInterface } from '../../../components/Post/Post.interface'
 
-const Post: NextPage = () => {
-  const router = useRouter()
+type Props = {
+  post: PostInterface[]
+}
 
-  const [post] = getPostById(router.query.id)
+interface IParams extends ParsedUrlQuery {
+  id: string
+}
+
+const Post: NextPage<Props> = (props) => {
+  const { post } = props
+  if (!post) {
+    return <p>Loading...</p>
+  }
+
+  const { topics, title, createdBy, createdAt, lastUpdated, body, votes } =
+    post[0]
+
+  console.log({ lable: 'Post in component', ...post })
 
   return (
     <div>
-      <em>| {post.topics && post.topics?.map((topic) => topic + ' | ')}</em>
-      <h1>{post.title}</h1>
-      <h2>Author: {post.createdBy}</h2>
-      <p>Created: {post.createdAt}</p>
-      <p>Updated: {post.lastUpdated}</p>
-      <p>{post.body}</p>
+      <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
+      <h1>{title}</h1>
+      <h2>Author: {createdBy}</h2>
+      <p>Created: {createdAt}</p>
+      <p>Updated: {lastUpdated}</p>
+      <p>{body}</p>
       <p>
-        {post.votes.up} upvotes | {post.votes.down} downvotes
+        {votes.up} upvotes | {votes.down} downvotes
       </p>
     </div>
   )
+}
+
+const getData = async () => {
+  const filePath = path.join(process.cwd(), 'data', 'dummy-data.json')
+  const jsonData = await fs.readFile(filePath, 'utf8')
+  const data: { posts: PostInterface[] } = JSON.parse(jsonData)
+
+  return data
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await getData()
+
+  const ids: string[] = data.posts.map((post) => post.id)
+
+  const pathsWithParams = ids.map((id) => ({ params: { id: id } }))
+
+  return { paths: pathsWithParams, fallback: true }
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { id } = context.params as IParams
+
+  const data = await getData()
+
+  const retrievedPost = data.posts.filter(
+    (post: PostInterface) => post.id === id
+  )
+
+  if (!retrievedPost) {
+    return { notFound: true }
+  }
+
+  return {
+    props: {
+      post: retrievedPost,
+    },
+  }
 }
 
 export default Post
