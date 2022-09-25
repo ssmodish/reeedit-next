@@ -1,5 +1,4 @@
-import path from 'path'
-import * as fs from 'node:fs/promises'
+import { getAllPosts } from '../../data/utils/api-utils'
 
 import PostList from '../../components/PostList/PostList'
 
@@ -21,13 +20,11 @@ const Posts = (props: Props) => {
 }
 
 export async function getStaticProps() {
-  const filePath = path.join(process.cwd(), 'data', 'dummy-data.json')
-  const jsonData = await fs.readFile(filePath, 'utf8')
-  const data = JSON.parse(jsonData)
+  const posts = await getAllPosts()
 
   return {
     props: {
-      ...data,
+      posts: posts,
     },
     revalidate: 10,
     // notFound: Boolean

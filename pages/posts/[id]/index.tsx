@@ -1,5 +1,4 @@
-import path from 'path'
-import * as fs from 'node:fs/promises'
+import { getAllPosts, getPost } from '../../../data/utils/api-utils'
 
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -22,8 +21,6 @@ const Post: NextPage<Props> = (props) => {
   const { topics, title, createdBy, createdAt, lastUpdated, body, votes } =
     post[0]
 
-  console.log({ lable: 'Post in component', ...post })
-
   return (
     <div>
       <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
@@ -39,18 +36,17 @@ const Post: NextPage<Props> = (props) => {
   )
 }
 
-const getData = async () => {
-  const filePath = path.join(process.cwd(), 'data', 'dummy-data.json')
-  const jsonData = await fs.readFile(filePath, 'utf8')
-  const data: { posts: PostInterface[] } = JSON.parse(jsonData)
-
-  return data
-}
-
 export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await getData()
+  const data = await getAllPosts()
+  console.warn('****************************************')
+  console.warn('*                                      *')
+  console.warn('* posts/[id]/index.tsx::getStaticPaths *')
+  console.warn('*                                      *')
+  console.warn('****************************************')
 
-  const ids: string[] = data.posts.map((post) => post.id)
+  console.log(data)
+
+  const ids: string[] = data.map((post) => post.id)
 
   const pathsWithParams = ids.map((id) => ({ params: { id: id } }))
 
@@ -60,11 +56,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params as IParams
 
-  const data = await getData()
-
-  const retrievedPost = data.posts.filter(
-    (post: PostInterface) => post.id === id
-  )
+  const retrievedPost: PostInterface[] = await getPost(id)
 
   if (!retrievedPost) {
     return { notFound: true }

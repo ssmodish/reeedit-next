@@ -1,7 +1,11 @@
 import { PostInterface } from '../Post/Post.interface'
 import PostListItem from '../PostListItem/PostListItem'
 
-const PostList = (props: { posts: PostInterface[] }) => {
+type Props = {
+  posts: PostInterface[]
+}
+
+const PostList = (props: Props) => {
   const posts = props.posts
 
   if (!posts) return <h2>No Posts Found</h2>

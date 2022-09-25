@@ -10,7 +10,7 @@ const Layout = (props: Props) => {
   return (
     <Fragment>
       <Head>
-        <title>Layouts Example</title>
+        <title>Reedit</title>
       </Head>
       <MainHeader />
       <main>{props.children}</main>
