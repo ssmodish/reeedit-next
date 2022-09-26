@@ -1,4 +1,4 @@
-import { PostInterface } from '../../components/Post/Post.interface'
+import { PostInterface } from '../components/Post/Post.interface'
 
 export const getAllPosts = async () => {
   const response = await fetch(

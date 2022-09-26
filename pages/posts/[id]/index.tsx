@@ -1,4 +1,4 @@
-import { getAllPosts, getPost } from '../../../data/utils/api-utils'
+import { getAllPosts, getPost } from '../../../utils/api-utils'
 
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'

@@ -1,4 +1,4 @@
-import { getAllPosts } from '../../data/utils/api-utils'
+import { getAllPosts } from '../../utils/api-utils'
 
 import PostList from '../../components/PostList/PostList'
 
