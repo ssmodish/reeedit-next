@@ -1,3 +1,5 @@
+import Head from 'next/head'
+
 import { getAllPosts } from '../../utils/api-utils'
 
 import PostList from '../../components/PostList/PostList'
@@ -13,6 +15,10 @@ const Posts = (props: Props) => {
 
   return (
     <div>
+      <Head>
+        <title>Recent Posts</title>
+        <meta name="description" content="The most recent posts" />
+      </Head>
       <h1>Posts:</h1>
       <PostList posts={posts} />
     </div>
@@ -26,7 +32,7 @@ export async function getStaticProps() {
     props: {
       posts: posts,
     },
-    revalidate: 10,
+    revalidate: 100,
     // notFound: Boolean
     // redirect: { destination: 'new_route' }
   }

@@ -1,6 +1,9 @@
+import { Fragment } from 'react'
 import { getAllPosts, getPost } from '../../../utils/api-utils'
 
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
+import Head from 'next/head'
+
 import { ParsedUrlQuery } from 'querystring'
 import { PostInterface } from '../../../components/Post/Post.interface'
 
@@ -22,33 +25,30 @@ const Post: NextPage<Props> = (props) => {
     post[0]
 
   return (
-    <div>
-      <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
-      <h1>{title}</h1>
-      <h2>Author: {createdBy}</h2>
-      <p>Created: {createdAt}</p>
-      <p>Updated: {lastUpdated}</p>
-      <p>{body}</p>
-      <p>
-        {votes.up} upvotes | {votes.down} downvotes
-      </p>
-    </div>
+    <Fragment>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={body} />
+      </Head>
+      <div>
+        <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
+        <h1>{title}</h1>
+        <h2>Author: {createdBy}</h2>
+        <p>Created: {createdAt}</p>
+        <p>Updated: {lastUpdated}</p>
+        <p>{body}</p>
+        <p>
+          {votes.up} upvotes | {votes.down} downvotes
+        </p>
+      </div>
+    </Fragment>
   )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = await getAllPosts()
-  console.warn('****************************************')
-  console.warn('*                                      *')
-  console.warn('* posts/[id]/index.tsx::getStaticPaths *')
-  console.warn('*                                      *')
-  console.warn('****************************************')
 
-  console.log(data)
-
-  const ids: string[] = data.map((post) => post.id)
-
-  const pathsWithParams = ids.map((id) => ({ params: { id: id } }))
+  const pathsWithParams = data.map((post) => ({ params: { id: post.id } }))
 
   return { paths: pathsWithParams, fallback: true }
 }
@@ -66,6 +66,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       post: retrievedPost,
     },
+    revalidate: 60,
   }
 }
 
