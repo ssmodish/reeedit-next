@@ -32,7 +32,7 @@ export async function getStaticProps() {
     props: {
       posts: posts,
     },
-    revalidate: 100,
+    revalidate: 30,
     // notFound: Boolean
     // redirect: { destination: 'new_route' }
   }

@@ -2,16 +2,17 @@ import { Fragment } from 'react'
 import { getAllPosts, getPost } from '../../../utils/api-utils'
 
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
+import { ParsedUrlQuery } from 'querystring'
+
 import Head from 'next/head'
 
-import { ParsedUrlQuery } from 'querystring'
 import { PostInterface } from '../../../components/Post/Post.interface'
 
 type Props = {
   post: PostInterface[]
 }
 
-interface IParams extends ParsedUrlQuery {
+interface Params extends ParsedUrlQuery {
   id: string
 }
 
@@ -20,6 +21,8 @@ const Post: NextPage<Props> = (props) => {
   if (!post) {
     return <p>Loading...</p>
   }
+
+  console.log(post)
 
   const { topics, title, createdBy, createdAt, lastUpdated, body, votes } =
     post[0]
@@ -45,29 +48,27 @@ const Post: NextPage<Props> = (props) => {
   )
 }
 
+export const getStaticProps: GetStaticProps<Props, Params> = async (
+  context
+) => {
+  const { id } = context.params!
+
+  const retrievedPost = await getPost(id)
+
+  return {
+    props: {
+      post: retrievedPost,
+    },
+    revalidate: 30,
+  }
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const data = await getAllPosts()
 
   const pathsWithParams = data.map((post) => ({ params: { id: post.id } }))
 
   return { paths: pathsWithParams, fallback: true }
-}
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { id } = context.params as IParams
-
-  const retrievedPost: PostInterface[] = await getPost(id)
-
-  if (!retrievedPost) {
-    return { notFound: true }
-  }
-
-  return {
-    props: {
-      post: retrievedPost,
-    },
-    revalidate: 60,
-  }
 }
 
 export default Post
