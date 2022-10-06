@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
-import { getAllPosts, getPost } from '../../../utils/api-utils'
+// import { getAllPosts, getPost } from '../../../utils/api-utils'
+import supabase from '../../../utils/supabase-utils'
 
 import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -18,13 +19,12 @@ interface Params extends ParsedUrlQuery {
 
 const Post: NextPage<Props> = (props) => {
   const { post } = props
+  console.log(post)
   if (!post) {
     return <p>Loading...</p>
   }
 
-  console.log(post)
-
-  const { topics, title, createdBy, createdAt, lastUpdated, body, votes } =
+  const { topics, title, created_by, created_at, last_updated, body, votes } =
     post[0]
 
   return (
@@ -36,9 +36,9 @@ const Post: NextPage<Props> = (props) => {
       <div>
         <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
         <h1>{title}</h1>
-        <h2>Author: {createdBy}</h2>
-        <p>Created: {createdAt}</p>
-        <p>Updated: {lastUpdated}</p>
+        <h2>Author: {created_by}</h2>
+        <p>Created: {created_at}</p>
+        <p>Updated: {last_updated}</p>
         <p>{body}</p>
         <p>
           {votes.up} upvotes | {votes.down} downvotes
@@ -48,12 +48,14 @@ const Post: NextPage<Props> = (props) => {
   )
 }
 
-export const getStaticProps: GetStaticProps<Props, Params> = async (
-  context
-) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params!
 
-  const retrievedPost = await getPost(id)
+  const retrievedPost = await supabase
+    .from<PostInterface>('posts')
+    .select('*')
+    .eq('id', Number(id))
+    .single()
 
   return {
     props: {
@@ -63,10 +65,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (
   }
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const data = await getAllPosts()
+export const getStaticPaths: GetStaticPaths<Props, Params> = async () => {
+  const { data: posts } = await supabase
+    .from<PostInterface>('posts')
+    .select('*')
 
-  const pathsWithParams = data.map((post) => ({ params: { id: post.id } }))
+  const pathsWithParams = posts?.map((post) => ({ params: { id: post.id } }))
 
   return { paths: pathsWithParams, fallback: true }
 }

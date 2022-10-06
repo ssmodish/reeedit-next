@@ -1,4 +1,6 @@
-import { getPost } from './../../../utils/api-utils'
+// import { getPost } from '../../../../utils/api-utils'
+import supabase from '../../../../utils/supabase-utils'
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,7 +13,11 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   switch (method) {
     case 'GET':
       if (postId) {
-        const post = await getPost(postId)
+        const post = await supabase
+          .from('posts')
+          .select('*')
+          .eq('id', postId)
+          .single()
         res.status(200).json({ post })
       }
       break

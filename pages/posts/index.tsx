@@ -1,6 +1,7 @@
 import Head from 'next/head'
 
-import { getAllPosts } from '../../utils/api-utils'
+// import { getAllPosts } from '../../utils/api-utils'
+import supabase from '../../utils/supabase-utils'
 
 import PostList from '../../components/PostList/PostList'
 
@@ -26,7 +27,14 @@ const Posts = (props: Props) => {
 }
 
 export async function getStaticProps() {
-  const posts = await getAllPosts()
+  // const posts = await getAllPosts()
+  const { data: posts, error } = await supabase
+    .from<PostInterface[]>('posts')
+    .select('*')
+
+  if (error) {
+    console.log(error.message)
+  }
 
   return {
     props: {
