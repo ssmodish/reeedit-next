@@ -1,21 +1,18 @@
 import { Fragment } from 'react'
 // import { getAllPosts, getPost } from '../../../utils/api-utils'
-import supabase from '../../../utils/supabase-utils'
+// import supabase from '../../../utils/supabase-utils'
 
-import { GetStaticProps, NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 // import { ParsedUrlQuery } from 'querystring'
 
 import Head from 'next/head'
 
 import { PostInterface } from '../../../components/Post/Post.interface'
+import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {
-  post: PostInterface[]
+  post: PostInterface
 }
-
-// interface Params extends ParsedUrlQuery {
-//   id: number
-// }
 
 const Post: NextPage<Props> = (props) => {
   const { post } = props
@@ -24,9 +21,7 @@ const Post: NextPage<Props> = (props) => {
   }
 
   const { topics, title, created_by, created_at, last_updated, body, votes } =
-    post.body
-
-  console.log('POST: ' + post)
+    post
 
   return (
     <Fragment>
@@ -52,30 +47,39 @@ const Post: NextPage<Props> = (props) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params!
 
-  const retrievedPost = await supabase
-    .from<PostInterface>('posts')
-    .select('*')
-    .eq('id', Number(id))
-    .single()
+  const response = await fetch(`http://localhost:3000/api/posts/${id}`)
+  const data = await response.json()
+  // const retrievedPost = data
+
+  console.log(data)
 
   return {
     props: {
-      post: retrievedPost,
+      post: data,
     },
     revalidate: 30,
   }
 }
 
-export const getStaticPaths = async () => {
-  const { data: posts } = await supabase
-    .from<PostInterface>('posts')
-    .select('*')
+export async function getStaticPaths() {
+  const response = await fetch('http://localhost:3000/api/posts')
+  const data = await response.json()
+  const { posts } = data
 
-  const pathsWithParams = posts?.map((post) => ({
-    params: { id: post.id.toString() },
+  console.log(posts)
+
+  const pathParams = posts.map((post: PostInterface) => ({
+    params: {
+      id: post.id,
+    },
   }))
 
-  return { paths: pathsWithParams, fallback: true }
+  console.log(pathParams)
+
+  return {
+    paths: pathParams,
+    fallback: false,
+  }
 }
 
 export default Post

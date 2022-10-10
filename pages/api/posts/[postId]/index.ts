@@ -13,12 +13,14 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
   switch (method) {
     case 'GET':
       if (postId) {
+        console.log(postId)
+
         const post = await supabase
           .from('posts')
           .select('*')
           .eq('id', postId)
           .single()
-        res.status(200).json({ post })
+        res.status(200).json({ post: post.data, error: post.error })
       }
       break
     default:
