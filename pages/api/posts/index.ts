@@ -11,7 +11,9 @@ type Data = {
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === 'POST') {
-    res.status(200).json({ message: 'Recieved a POST request' })
+    const newPost = req.body.post
+
+    res.status(200).json({ message: 'Recieved a POST request', post: newPost })
   }
 
   if (req.method === 'GET') {

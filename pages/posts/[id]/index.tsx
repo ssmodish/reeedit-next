@@ -14,7 +14,7 @@ type Props = {
 }
 
 interface Params extends ParsedUrlQuery {
-  id: string
+  id: number
 }
 
 const Post: NextPage<Props> = (props) => {
