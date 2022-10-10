@@ -2,8 +2,8 @@ import { Fragment } from 'react'
 // import { getAllPosts, getPost } from '../../../utils/api-utils'
 import supabase from '../../../utils/supabase-utils'
 
-import { GetStaticProps, GetStaticPaths, NextPage } from 'next'
-import { ParsedUrlQuery } from 'querystring'
+import { GetStaticProps, NextPage } from 'next'
+// import { ParsedUrlQuery } from 'querystring'
 
 import Head from 'next/head'
 
@@ -13,19 +13,20 @@ type Props = {
   post: PostInterface[]
 }
 
-interface Params extends ParsedUrlQuery {
-  id: number
-}
+// interface Params extends ParsedUrlQuery {
+//   id: number
+// }
 
 const Post: NextPage<Props> = (props) => {
   const { post } = props
-  console.log(post)
   if (!post) {
     return <p>Loading...</p>
   }
 
   const { topics, title, created_by, created_at, last_updated, body, votes } =
-    post[0]
+    post.body
+
+  console.log('POST: ' + post)
 
   return (
     <Fragment>
@@ -65,12 +66,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 }
 
-export const getStaticPaths: GetStaticPaths<Props, Params> = async () => {
+export const getStaticPaths = async () => {
   const { data: posts } = await supabase
     .from<PostInterface>('posts')
     .select('*')
 
-  const pathsWithParams = posts?.map((post) => ({ params: { id: post.id } }))
+  const pathsWithParams = posts?.map((post) => ({
+    params: { id: post.id.toString() },
+  }))
 
   return { paths: pathsWithParams, fallback: true }
 }
