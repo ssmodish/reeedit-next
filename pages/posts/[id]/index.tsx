@@ -1,17 +1,13 @@
 import { Fragment } from 'react'
-// import { getAllPosts, getPost } from '../../../utils/api-utils'
-// import supabase from '../../../utils/supabase-utils'
-
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-// import { ParsedUrlQuery } from 'querystring'
+import { GetStaticProps, NextPage } from 'next'
 
 import Head from 'next/head'
 
-import { PostInterface } from '../../../components/Post/Post.interface'
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
+import { Post } from '@prisma/client'
+import { getPostById, getPosts } from '../../../services/posts'
 
 type Props = {
-  post: PostInterface
+  post: Post
 }
 
 const Post: NextPage<Props> = (props) => {
@@ -20,8 +16,7 @@ const Post: NextPage<Props> = (props) => {
     return <p>Loading...</p>
   }
 
-  const { topics, title, created_by, created_at, last_updated, body, votes } =
-    post
+  const { title, body, comments } = post
 
   return (
     <Fragment>
@@ -29,17 +24,16 @@ const Post: NextPage<Props> = (props) => {
         <title>{title}</title>
         <meta name="description" content={body} />
       </Head>
+      <br />
+      <br />
       <div>
-        <em>| {topics && topics?.map((topic) => topic + ' | ')}</em>
         <h1>{title}</h1>
-        <h2>Author: {created_by}</h2>
-        <p>Created: {created_at}</p>
-        <p>Updated: {last_updated}</p>
         <p>{body}</p>
-        <p>
-          {votes.up} upvotes | {votes.down} downvotes
-        </p>
       </div>
+      <hr />
+      {comments.map((comment) => (
+        <p key={comment.id}>{comment.message}</p>
+      ))}
     </Fragment>
   )
 }
@@ -47,28 +41,20 @@ const Post: NextPage<Props> = (props) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params!
 
-  const response = await fetch(`http://localhost:3000/api/posts/${id}`)
-  const data = await response.json()
-  // const retrievedPost = data
-
-  console.log(data)
+  const post = await getPostById(id)
 
   return {
     props: {
-      post: data,
+      post: post,
     },
     revalidate: 30,
   }
 }
 
 export async function getStaticPaths() {
-  const response = await fetch('http://localhost:3000/api/posts')
-  const data = await response.json()
-  const { posts } = data
+  const posts = await getPosts()
 
-  console.log(posts)
-
-  const pathParams = posts.map((post: PostInterface) => ({
+  const pathParams = posts.map((post) => ({
     params: {
       id: post.id,
     },

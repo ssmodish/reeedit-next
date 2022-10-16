@@ -1,36 +1,42 @@
-import { FormEvent, useRef } from 'react'
+import { useState } from 'react'
 
 const NewPostForm = () => {
-  const titleInputRef = useRef<HTMLInputElement>(null)
+  const title = useState(null)
+  const body = useState(null)
 
-  function newFormHandler(event: FormEvent) {
-    event.preventDefault()
-
-    if (null !== titleInputRef.current) {
-      const enteredPostTitle = titleInputRef.current.value
-      fetch('/api/posts', {
-        method: 'POST',
-        body: JSON.stringify({ title: enteredPostTitle }),
-        headers: { 'Content-Type': 'application/json' },
-      })
-      titleInputRef.current.value = null
-    }
+  const formHandler = () => {
+    console.log('Form Submitted!')
   }
 
   return (
     <div>
+      <br />
+      <br />
       <h2>Create New Post</h2>
-      <form onSubmit={newFormHandler}>
+      <hr />
+      <form onSubmit={formHandler}>
         <input
           type="text"
           name="title"
           id="title"
           placeholder="Title of Post"
-          ref={titleInputRef}
+          value={title}
           required
         />
+        <br />
+        <input
+          type="textarea"
+          name="body"
+          id="body"
+          placeholder="Body of post"
+          value={body}
+          required
+        />
+        <br />
         <button type="submit">Submit</button>
       </form>
+      <hr />
+      <br />
     </div>
   )
 }

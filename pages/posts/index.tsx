@@ -1,14 +1,11 @@
 import Head from 'next/head'
-
-// import { getAllPosts } from '../../utils/api-utils'
-import supabase from '../../utils/supabase-utils'
+import { Post } from '@prisma/client'
 
 import PostList from '../../components/PostList/PostList'
-
-import { PostInterface } from '../../components/Post/Post.interface'
+import { getPosts } from '../../services/posts'
 
 type Props = {
-  posts: PostInterface[]
+  posts: Post[]
 }
 
 const Posts = (props: Props) => {
@@ -27,14 +24,7 @@ const Posts = (props: Props) => {
 }
 
 export async function getStaticProps() {
-  // const posts = await getAllPosts()
-  const { data: posts, error } = await supabase
-    .from<PostInterface[]>('posts')
-    .select('*')
-
-  if (error) {
-    console.log(error.message)
-  }
+  const posts = await getPosts()
 
   return {
     props: {

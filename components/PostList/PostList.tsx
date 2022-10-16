@@ -1,9 +1,9 @@
-import { PostInterface } from '../Post/Post.interface'
+import { Post } from '@prisma/client'
 import PostListItem from '../PostListItem/PostListItem'
 import NewPostForm from '../NewPostForm'
 
 type Props = {
-  posts: PostInterface[]
+  posts: Post[]
 }
 
 const PostList = (props: Props) => {
