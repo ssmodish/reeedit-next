@@ -1,6 +1,5 @@
 import { Post } from '@prisma/client'
 import PostListItem from '../PostListItem/PostListItem'
-import NewPostForm from '../NewPostForm'
 
 type Props = {
   posts: Post[]
@@ -13,7 +12,6 @@ const PostList = (props: Props) => {
 
   return (
     <div>
-      <NewPostForm />
       <ul>
         {posts.map((post) => (
           <PostListItem key={post.id} {...post} />

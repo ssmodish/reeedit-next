@@ -7,3 +7,9 @@ export function getPosts() {
 export function getPostById(id) {
   return makeRequest(`/posts/${id}`)
 }
+
+export function createPost(newPost) {
+  return makeRequest('/posts', {
+    method: 'POST',
+  })
+}

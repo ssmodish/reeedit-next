@@ -1,39 +1,35 @@
-import { useState } from 'react'
-
-const NewPostForm = () => {
-  const title = useState(null)
-  const body = useState(null)
-
-  const formHandler = () => {
-    console.log('Form Submitted!')
-  }
-
+const NewPostForm = ({ title, body, setTitle, setBody, handleSubmit }) => {
   return (
     <div>
       <br />
       <br />
       <h2>Create New Post</h2>
       <hr />
-      <form onSubmit={formHandler}>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title: </label>
         <input
-          type="text"
-          name="title"
+          autoFocus
           id="title"
+          type="text"
           placeholder="Title of Post"
+          required
           value={title}
-          required
+          onChange={(e) => setTitle(e.target.value)}
         />
         <br />
+        <label htmlFor="body">Body: </label>
         <input
-          type="textarea"
-          name="body"
           id="body"
+          type="textarea"
           placeholder="Body of post"
-          value={body}
           required
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
         />
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit" aria-label="Create Post">
+          Create Post
+        </button>
       </form>
       <hr />
       <br />

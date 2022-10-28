@@ -1,22 +1,29 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient, Post, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
-      const newPost: Prisma.PostCreateInput = JSON.parse(req.body)
+      const { title, body } = JSON.parse(req.body)
+
       const savedPost = await prisma.post.create({
-        data: newPost,
+        data: {
+          title,
+          body,
+        },
       })
       res.json(savedPost)
       break
-
-    default:
+    case 'GET':
       const posts = await prisma.post.findMany()
       res.send(posts)
+      break
+
+    default:
+      res.status(405).json({ message: 'Method not allowed' })
   }
 }
 
