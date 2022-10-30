@@ -1,4 +1,7 @@
-import type { NextPage } from 'next'
+// pages/index.tsx
+import prisma from '../lib/prisma'
+
+import type { NextPage, GetStaticProps } from 'next'
 
 import Head from 'next/head'
 import Link from 'next/link'
@@ -14,6 +17,15 @@ const Home: NextPage = () => {
       <Link href="/posts">Posts</Link>
     </div>
   )
+}
+
+// index.tsx
+export const getStaticProps: GetStaticProps = async () => {
+  const feed = await prisma.post.findMany({})
+  return {
+    props: { feed },
+    revalidate: 10,
+  }
 }
 
 export default Home

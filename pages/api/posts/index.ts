@@ -1,25 +1,22 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '../../../lib/prisma'
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case 'POST':
-      const { title, body } = JSON.parse(req.body)
+      const { title, body } = req.body
 
       const savedPost = await prisma.post.create({
         data: {
-          title,
-          body,
+          title: title,
+          body: body,
         },
       })
-      res.json(savedPost)
+      res.status(201).json(savedPost)
       break
     case 'GET':
       const posts = await prisma.post.findMany()
-      res.send(posts)
+      res.status(200).json(posts)
       break
 
     default:

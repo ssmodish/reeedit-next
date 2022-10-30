@@ -1,22 +1,22 @@
 import { Fragment } from 'react'
 import { GetStaticProps, NextPage } from 'next'
-
 import Head from 'next/head'
-
-import { Post } from '@prisma/client'
-import { getPostById, getPosts } from '../../../services/posts'
+import prisma from '../../../lib/prisma'
+import { makeSerializable } from '../../../lib/util'
+import { Post, Comment } from '@prisma/client'
 
 type Props = {
   post: Post
+  comments: Comment[]
 }
 
 const Post: NextPage<Props> = (props) => {
-  const { post } = props
+  const { post, comments } = props
   if (!post) {
     return <p>Loading...</p>
   }
 
-  const { title, body, comments } = post
+  const { title, body } = post
 
   return (
     <Fragment>
@@ -31,9 +31,8 @@ const Post: NextPage<Props> = (props) => {
         <p>{body}</p>
       </div>
       <hr />
-      {comments.map((comment) => (
-        <p key={comment.id}>{comment.message}</p>
-      ))}
+      {comments &&
+        comments.map((comment) => <p key={comment.id}>{comment.message}</p>)}
     </Fragment>
   )
 }
@@ -41,18 +40,30 @@ const Post: NextPage<Props> = (props) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params!
 
-  const post = await getPostById(id)
+  const post = await prisma.post.findUnique({
+    where: {
+      id: id?.toString(),
+    },
+  })
+  const postComments = await prisma.post
+    .findUnique({
+      where: {
+        id: id?.toString(),
+      },
+    })
+    .comments()
 
   return {
     props: {
       post: post,
+      comments: makeSerializable(postComments),
     },
     revalidate: 30,
   }
 }
 
 export async function getStaticPaths() {
-  const posts = await getPosts()
+  const posts = await prisma.post.findMany()
 
   const pathParams = posts.map((post) => ({
     params: {
