@@ -28,6 +28,8 @@ const Posts = (props: Props) => {
 
       await axios.post('http://localhost:3000/api/posts/addPost', newPost)
       router.push('/posts')
+      setTitle('')
+      setBody('')
     } catch (error) {
       console.log(error)
     }
