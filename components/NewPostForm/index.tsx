@@ -1,10 +1,48 @@
-const NewPostForm = ({ title, body, setTitle, setBody, handleSubmit }) => {
+import { useState } from 'react'
+// import { useRouter } from 'next/router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+
+const NewPostForm = () => {
+  const queryClient = useQueryClient()
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+
+  const mutation = useMutation({
+    mutationFn: (newPost) => {
+      return axios.post('http://localhost:3000/api/posts/addPost', newPost)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    },
+  })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await mutation.mutate({ title: title, body: body })
+
+    setTitle('')
+    setBody('')
+  }
+
   return (
     <div>
       <br />
       <br />
       <h2>Create New Post</h2>
       <hr />
+      {mutation.isLoading ? (
+        'Adding post...'
+      ) : (
+        <>
+          {mutation.isError ? (
+            <div>An error occurred: {mutation.error.message}</div>
+          ) : null}
+        </>
+      )}
+
+      {mutation.isSuccess ? <div>Post added!</div> : null}
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title: </label>
         <input

@@ -1,24 +1,28 @@
 import { Post } from '@prisma/client'
 import axios from 'axios'
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 const PostListItem = (props: Post) => {
-  const router = useRouter()
-
+  const queryClient = useQueryClient()
   const { id, title, body } = props
 
   const postLink = `/posts/${id}`
+
+  const mutation = useMutation({
+    mutationFn: (postId) => {
+      return axios.post('http://localhost:3000/api/posts/deletePost', postId)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+    },
+  })
 
   const handleDelete = async () => {
     console.log('Delete Post ID: ', id)
 
     if (window.confirm('Delete Post?')) {
-      await axios.post(`http://localhost:3000/api/posts/deletePost`, {
-        id: id.toString(),
-      })
-      router.push('/posts')
+      await mutation.mutate({ id: id })
     }
   }
 
@@ -31,7 +35,9 @@ const PostListItem = (props: Post) => {
           <button>View Post</button>
         </Link>
         <br />
-        <button onClick={handleDelete}>Delete Post</button>
+        <button onClick={handleDelete} disabled={mutation.isLoading}>
+          Delete Post
+        </button>
       </div>
       <hr />
     </div>

@@ -1,19 +1,18 @@
-import { Post } from '@prisma/client'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import PostListItem from '../PostListItem/PostListItem'
 
-type Props = {
-  posts: Post[]
+const fetchPosts = async () => {
+  const res = await fetch('http://localhost:3000/api/posts')
+  return res.json()
 }
 
-const PostList = (props: Props) => {
-  const posts = props.posts
-
-  if (!posts) return <h2>No Posts Found</h2>
+const PostList = () => {
+  const query = useQuery({ queryKey: ['posts'], queryFn: fetchPosts })
 
   return (
     <div>
       <ul>
-        {posts.map((post) => (
+        {query.data?.map((post) => (
           <PostListItem key={post.id} {...post} />
         ))}
       </ul>
