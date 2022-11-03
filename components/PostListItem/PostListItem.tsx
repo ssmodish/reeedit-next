@@ -1,4 +1,3 @@
-import { Post } from '@prisma/client'
 import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
@@ -18,11 +17,11 @@ const PostListItem = (props: Post) => {
     },
   })
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     console.log('Delete Post ID: ', id)
 
     if (window.confirm('Delete Post?')) {
-      await mutation.mutate({ id: id })
+      mutation.mutate({ id: id })
     }
   }
 
