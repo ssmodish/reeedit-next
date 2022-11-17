@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import PostListItem from '../PostListItem/PostListItem'
 
 const fetchPosts = async () => {
-  const res = await fetch('http://localhost:3000/api/posts')
-  return res.json()
+  const res = await axios.get('http://localhost:3000/api/posts')
+  return res.data
 }
 
 const PostList = () => {

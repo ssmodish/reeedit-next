@@ -26,15 +26,21 @@ const PostListItem = (props: Post) => {
   }
 
   return (
-    <div>
+    <div className="m-3 p-2 border rounded-md shadow-sm shadow-gray-300 bg-gray-100">
       <h2>Title: {title}</h2>
       <p>{body}</p>
-      <div>
+      <div className="flex">
         <Link href={postLink}>
-          <button>View Post</button>
+          <button className="p-2 my-1 mr-1 rounded-md bg-blue-500">
+            View Post
+          </button>
         </Link>
         <br />
-        <button onClick={handleDelete} disabled={mutation.isLoading}>
+        <button
+          onClick={handleDelete}
+          disabled={mutation.isLoading}
+          className="p-2 m-1 rounded-md bg-red-500"
+        >
           Delete Post
         </button>
       </div>

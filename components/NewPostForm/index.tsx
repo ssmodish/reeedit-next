@@ -27,10 +27,7 @@ const NewPostForm = () => {
 
   return (
     <div>
-      <br />
-      <br />
-      <h2>Create New Post</h2>
-      <hr />
+      <h2 className="text-lg">Create New Post</h2>
       {mutation.isLoading ? (
         'Adding post...'
       ) : (

@@ -2,12 +2,14 @@ import Link from 'next/link'
 
 const MainHeader = () => {
   return (
-    <header>
+    <header className="flex justify-between p-4 bg-green-100">
       <div>
-        <Link href="/">REEEDIT</Link>
+        <Link href="/">
+          <span className="text-2xl">REEEDIT</span>
+        </Link>
       </div>
       <nav>
-        <ul>
+        <ul className="flex space-x-2 ">
           <li>
             <Link href="/posts">Posts</Link>
           </li>

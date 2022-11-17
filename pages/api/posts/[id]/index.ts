@@ -1,13 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../lib/prisma'
+import prisma from '../../../../lib/prisma'
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const post = await prisma.posts.findUnique({
+  const postId = req.query.id
+  const posts = await prisma.post.findUnique({
     where: {
-      id: req.body.id.toString(),
+      id: postId,
     },
   })
-  res.status(200).json(post)
+  res.status(200).json(posts)
 }
 
 export default handler
