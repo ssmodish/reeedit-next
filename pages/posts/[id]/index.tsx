@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import EditPostForm from '../../../components/EditPostForm'
 
 const getPostById = async (postId: string) => {
   const res = await axios.get(`http://localhost:3000/api/posts/${postId}`)
@@ -20,7 +21,7 @@ const Post = () => {
   if (status === 'loading') {
     return (
       <div>
-        <h2>Loading...</h2>
+        <h2 className="text-4xl">Loading...</h2>
       </div>
     )
   }
@@ -40,19 +41,28 @@ const Post = () => {
     return (
       <Fragment>
         <Head>
-          <title>{data.title}</title>
+          <title>Reeedit - {data.title}</title>
           <meta name="description" content={data.body} />
         </Head>
-        <br />
-        <br />
-        <div>
-          <h1>{data.title}</h1>
-          <p>{data.body}</p>
-        </div>
-        <hr />
-        <h3>Must query comments</h3>
-        {/* {comments &&
+        <div className="m-4">
+          <div className="mb-2">
+            <h1 className="text-2xl mb-2">{data.title}</h1>
+            <p>{data.body}</p>
+            <button className="p-2 m-1 rounded-md bg-blue-300">
+              Edit Post
+            </button>
+            <EditPostForm
+              postId={id}
+              editTitle={data.title}
+              editBody={data.body}
+            />
+          </div>
+          <div>
+            <h3>Must query comments</h3>
+            {/* {comments &&
         comments.map((comment) => <p key={comment.id}>{comment.message}</p>)} */}
+          </div>
+        </div>
       </Fragment>
     )
   }
