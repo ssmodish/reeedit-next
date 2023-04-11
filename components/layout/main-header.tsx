@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
 const MainHeader = () => {
   return (
@@ -15,6 +16,14 @@ const MainHeader = () => {
           </li>
           <li>
             <Link href="/topics">Topics</Link>
+          </li>
+          <li>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
           </li>
         </ul>
       </nav>
