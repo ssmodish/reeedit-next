@@ -3,20 +3,20 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
 const MainHeader = () => {
   return (
-    <header className="flex justify-between p-4 bg-green-100">
+    <header className="flex justify-between p-3 bg-green-100">
       <div>
         <Link href="/">
           <span className="text-2xl">REEEDIT</span>
         </Link>
       </div>
       <nav>
-        <ul className="flex space-x-2 ">
+        <ul className="flex space-x-2 items-center">
           <li>
             <Link href="/posts">Posts</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/topics">Topics</Link>
-          </li>
+          </li> */}
           <li>
             <SignedIn>
               <UserButton />

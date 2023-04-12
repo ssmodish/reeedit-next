@@ -1,9 +1,11 @@
 import { useState } from 'react'
-// import { useRouter } from 'next/router'
+import { useUser } from '@clerk/nextjs'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
 const NewPostForm = () => {
+  const { user } = useUser()
   const queryClient = useQueryClient()
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -19,7 +21,8 @@ const NewPostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await mutation.mutate({ title: title, body: body })
+    const authorId = user?.id || 'anonymous'
+    await mutation.mutate({ title: title, body: body, authorId: authorId })
 
     setTitle('')
     setBody('')

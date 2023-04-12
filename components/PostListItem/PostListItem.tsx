@@ -1,10 +1,32 @@
 import axios from 'axios'
+import { useUser } from '@clerk/nextjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 
+const UserButtons = ({ postLink, handleDelete, mutation }) => {
+  return (
+    <div className="flex justify-end">
+      <Link href={postLink}>
+        <button className="p-2 my-1 mr-1 rounded-md bg-blue-500 text-xs">
+          View Post
+        </button>
+      </Link>
+      <br />
+      <button
+        onClick={handleDelete}
+        disabled={mutation.isLoading}
+        className="p-2 m-1 rounded-md bg-red-500 text-xs"
+      >
+        Delete Post
+      </button>
+    </div>
+  )
+}
+
 const PostListItem = (props: Post) => {
+  const user = useUser()
   const queryClient = useQueryClient()
-  const { id, title, body } = props
+  const { id, title, body, authorId } = props
 
   const postLink = `/posts/${id}`
 
@@ -26,25 +48,17 @@ const PostListItem = (props: Post) => {
   }
 
   return (
-    <div className="m-3 p-2 border rounded-md shadow-sm shadow-gray-300 bg-gray-100">
-      <h2>Title: {title}</h2>
-      <p>{body}</p>
-      <div className="flex">
-        <Link href={postLink}>
-          <button className="p-2 my-1 mr-1 rounded-md bg-blue-500">
-            View Post
-          </button>
-        </Link>
-        <br />
-        <button
-          onClick={handleDelete}
-          disabled={mutation.isLoading}
-          className="p-2 m-1 rounded-md bg-red-500"
-        >
-          Delete Post
-        </button>
-      </div>
-      <hr />
+    <div className="my-3 p-2 border rounded-md shadow-sm shadow-gray-400 bg-gray-100">
+      <h2 className="font-bold text-lg">Title: {title}</h2>
+      <p className="text-sm">Author: {authorId}</p>
+      <p className="text-base">{body}</p>
+      {user.user?.id === authorId ? (
+        <UserButtons
+          postLink={postLink}
+          handleDelete={handleDelete}
+          mutation={mutation}
+        />
+      ) : null}
     </div>
   )
 }
