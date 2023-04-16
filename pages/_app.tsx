@@ -11,7 +11,7 @@ const queryClient = new QueryClient()
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
-    <ClerkProvider {...pageProps}>
+    <ClerkProvider>
       <QueryClientProvider client={queryClient}>
         <Layout>
           <Head>

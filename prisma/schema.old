@@ -49,3 +49,30 @@ model Like {
 
   @@id([userId, commentId])
 }
+
+---------
+FROM an online prisma schema builder
+
+model Posts {
+  user.id String @unique @default(cuid())
+  title     String
+  body      String
+  createdAt DateTime
+  updatedAt DateTime? @updatedAt
+  user.id String @unique @default(cuid())
+}
+model Comments {
+  body      String
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+  parentId  Comments
+  id        Posts
+  id        Users
+}
+model Users {
+  id         String    @id @unique @default(cuid())
+  screenName String    @unique
+  email      String
+  createdAt  DateTime
+  updatedAt  DateTime? @updatedAt
+}
