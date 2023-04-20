@@ -1,19 +1,24 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import PostListItem from '../PostListItem/PostListItem'
+import { Post } from '@prisma/client'
 
 const fetchPosts = async () => {
-  const res = await axios.get('http://localhost:3000/api/posts')
-  return res.data
+  try {
+    const res = await axios.get('http://localhost:3000/api/posts')
+    return res.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const PostList = () => {
   const query = useQuery({ queryKey: ['posts'], queryFn: fetchPosts })
 
   return (
-    <div>
+    <div className="container mx-auto">
       <ul>
-        {query.data?.map((post) => (
+        {query.data?.map((post: Post) => (
           <PostListItem key={post.id} {...post} />
         ))}
       </ul>

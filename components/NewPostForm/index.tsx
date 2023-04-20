@@ -44,28 +44,36 @@ const NewPostForm = () => {
       {mutation.isSuccess ? <div>Post added!</div> : null}
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title: </label>
-        <input
-          autoFocus
-          id="title"
-          type="text"
-          placeholder="Title of Post"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br />
-        <label htmlFor="body">Body: </label>
-        <input
-          id="body"
-          type="textarea"
-          placeholder="Body of post"
-          required
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-        />
-        <br />
-        <button type="submit" aria-label="Create Post">
+        <div className="flex flex-col">
+          <div className="mb-1">
+            <label htmlFor="title">Title: </label>
+            <input
+              autoFocus
+              id="title"
+              type="text"
+              placeholder="Title of Post"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="mb-1">
+            <label htmlFor="body">Body: </label>
+            <input
+              id="body"
+              type="textarea"
+              placeholder="Body of post"
+              required
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          aria-label="Create Post"
+          className="p-2 my-1 mr-1 rounded-md bg-blue-500 text-xs"
+        >
           Create Post
         </button>
       </form>

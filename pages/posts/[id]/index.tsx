@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useQuery } from '@tanstack/react-query'
@@ -11,6 +11,7 @@ const getPostById = async (postId: string) => {
 }
 
 const Post = () => {
+  const [editPost, setEditPost] = useState(false)
   const router = useRouter()
   const { id } = router.query
   const { status, data, error } = useQuery({
@@ -44,18 +45,24 @@ const Post = () => {
           <title>Reeedit - {data.title}</title>
           <meta name="description" content={data.body} />
         </Head>
-        <div className="m-4">
+        <div className="container mx-auto">
           <div className="mb-2">
             <h1 className="text-2xl mb-2">{data.title}</h1>
             <p>{data.body}</p>
-            <button className="p-2 m-1 rounded-md bg-blue-300">
+            <button
+              className="p-2 m-1 rounded-md bg-blue-300"
+              onClick={() => setEditPost(!editPost)}
+            >
               Edit Post
             </button>
-            <EditPostForm
-              postId={id}
-              editTitle={data.title}
-              editBody={data.body}
-            />
+            {editPost && (
+              <EditPostForm
+                postId={id}
+                editTitle={data.title}
+                editBody={data.body}
+                setEditPost={setEditPost}
+              />
+            )}
           </div>
           <div>
             <h3>Must query comments</h3>

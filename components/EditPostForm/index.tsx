@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// import { useRouter } from 'next/router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
@@ -9,7 +8,7 @@ type EPost = {
   editBody: string
 }
 
-const EditPostForm = ({ postId, editTitle, editBody }: EPost) => {
+const EditPostForm = ({ postId, editTitle, editBody, setEditPost }: EPost) => {
   const queryClient = useQueryClient()
   const [title, setTitle] = useState(editTitle)
   const [body, setBody] = useState(editBody)
@@ -29,7 +28,7 @@ const EditPostForm = ({ postId, editTitle, editBody }: EPost) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     await mutation.mutate({ title: title, body: body })
-
+    setEditPost(false)
     // close modal
   }
 
@@ -37,7 +36,7 @@ const EditPostForm = ({ postId, editTitle, editBody }: EPost) => {
     <div>
       <h2 className="text-lg">Edit Post</h2>
       {mutation.isLoading ? (
-        'Adding post...'
+        'Updating post...'
       ) : (
         <>
           {mutation.isError ? (
@@ -46,7 +45,7 @@ const EditPostForm = ({ postId, editTitle, editBody }: EPost) => {
         </>
       )}
 
-      {mutation.isSuccess ? <div>Post Edited!</div> : null}
+      {mutation.isSuccess ? <div>Post Updated!</div> : null}
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title: </label>
@@ -70,7 +69,11 @@ const EditPostForm = ({ postId, editTitle, editBody }: EPost) => {
           onChange={(e) => setBody(e.target.value)}
         />
         <br />
-        <button type="submit" aria-label="Create Post">
+        <button
+          type="submit"
+          aria-label="Create Post"
+          className="p-2 my-1 mr-1 rounded-md bg-blue-500 text-xs"
+        >
           Save Post
         </button>
       </form>

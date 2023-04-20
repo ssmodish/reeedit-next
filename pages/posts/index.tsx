@@ -10,7 +10,7 @@ const Posts = () => {
   const user = useUser()
 
   return (
-    <div className="mx-3">
+    <div className="mx-3 container mx-auto">
       <Head>
         <title>Recent Posts</title>
         <meta name="description" content="The most recent posts" />
