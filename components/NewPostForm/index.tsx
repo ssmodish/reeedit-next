@@ -21,8 +21,8 @@ const NewPostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const authorId = user?.id || 'anonymous'
-    await mutation.mutate({ title: title, body: body, authorId: authorId })
+    const userId = user?.id || 'anonymous'
+    await mutation.mutate({ title: title, body: body, userId: userId })
 
     setTitle('')
     setBody('')

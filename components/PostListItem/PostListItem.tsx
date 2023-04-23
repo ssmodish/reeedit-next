@@ -4,7 +4,7 @@ import { useUser } from '@clerk/nextjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Post } from '@prisma/client'
 
-const PostListItem = ({ id, title, body, authorId }: Post) => {
+const PostListItem = ({ id, title, body, userId }: Post) => {
   const user = useUser()
   const queryClient = useQueryClient()
 
@@ -30,7 +30,8 @@ const PostListItem = ({ id, title, body, authorId }: Post) => {
   return (
     <div className="my-3 p-2 border rounded-md shadow-sm shadow-gray-400 bg-gray-100">
       <h2 className="font-bold text-lg">Title: {title}</h2>
-      <p className="text-sm">Author: {authorId}</p>
+      <p>PostId: {id}</p>
+      <p className="text-sm">Author: {userId}</p>
       <p className="text-base">{body}</p>
       <div className="flex justify-end">
         <Link href={postLink}>
@@ -38,7 +39,7 @@ const PostListItem = ({ id, title, body, authorId }: Post) => {
             View Post
           </button>
         </Link>
-        {user.user?.id === authorId ? (
+        {user.user?.id === userId ? (
           // <DeleteButton handleDelete={handleDelete} mutation={mutation} />
           <>
             <br />

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { Post } from '@prisma/client'
 import axios from 'axios'
 import PostListItem from '../PostListItem/PostListItem'
-import { Post } from '@prisma/client'
 
 const fetchPosts = async () => {
   try {
