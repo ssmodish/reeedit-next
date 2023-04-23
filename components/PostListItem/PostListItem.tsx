@@ -3,14 +3,9 @@ import { useUser } from '@clerk/nextjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 
-const UserButtons = ({ postLink, handleDelete, mutation }) => {
+const DeleteButton = ({ postLink, handleDelete, mutation }) => {
   return (
-    <div className="flex justify-end">
-      <Link href={postLink}>
-        <button className="p-2 my-1 mr-1 rounded-md bg-blue-500 text-xs">
-          View Post
-        </button>
-      </Link>
+    <>
       <br />
       <button
         onClick={handleDelete}
@@ -19,7 +14,7 @@ const UserButtons = ({ postLink, handleDelete, mutation }) => {
       >
         Delete Post
       </button>
-    </div>
+    </>
   )
 }
 
@@ -52,13 +47,16 @@ const PostListItem = (props: Post) => {
       <h2 className="font-bold text-lg">Title: {title}</h2>
       <p className="text-sm">Author: {authorId}</p>
       <p className="text-base">{body}</p>
-      {user.user?.id === authorId ? (
-        <UserButtons
-          postLink={postLink}
-          handleDelete={handleDelete}
-          mutation={mutation}
-        />
-      ) : null}
+      <div className="flex justify-end">
+        <Link href={postLink}>
+          <button className="p-2 my-1 mr-1 rounded-md bg-blue-500 text-xs">
+            View Post
+          </button>
+        </Link>
+        {user.user?.id === authorId ? (
+          <DeleteButton handleDelete={handleDelete} mutation={mutation} />
+        ) : null}
+      </div>
     </div>
   )
 }

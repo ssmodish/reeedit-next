@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { useUser } from '@clerk/nextjs'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import EditPostForm from '../../../components/EditPostForm'
@@ -11,6 +12,7 @@ const getPostById = async (postId: string) => {
 }
 
 const Post = () => {
+  const user = useUser()
   const [editPost, setEditPost] = useState(false)
   const router = useRouter()
   const { id } = router.query
@@ -47,14 +49,18 @@ const Post = () => {
         </Head>
         <div className="container mx-auto">
           <div className="mb-2">
-            <h1 className="text-2xl mb-2">{data.title}</h1>
+            <h1 className="text-2xl mb-2 font-semibold">{data.title}</h1>
             <p>{data.body}</p>
-            <button
-              className="p-2 m-1 rounded-md bg-blue-300"
-              onClick={() => setEditPost(!editPost)}
-            >
-              Edit Post
-            </button>
+            {user.user?.id === data.authorId ? (
+              <>
+                <button
+                  className="p-2 m-1 rounded-md bg-blue-300"
+                  onClick={() => setEditPost(!editPost)}
+                >
+                  Edit Post
+                </button>
+              </>
+            ) : null}
             {editPost && (
               <EditPostForm
                 postId={id}
@@ -65,7 +71,7 @@ const Post = () => {
             )}
           </div>
           <div>
-            <h3>Must query comments</h3>
+            <h3 className="font-semibold text-lg">Comments</h3>
             {/* {comments &&
         comments.map((comment) => <p key={comment.id}>{comment.message}</p>)} */}
           </div>
