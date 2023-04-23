@@ -1,27 +1,12 @@
 import axios from 'axios'
+import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import Link from 'next/link'
+import { Post } from '@prisma/client'
 
-const DeleteButton = ({ postLink, handleDelete, mutation }) => {
-  return (
-    <>
-      <br />
-      <button
-        onClick={handleDelete}
-        disabled={mutation.isLoading}
-        className="p-2 m-1 rounded-md bg-red-500 text-xs"
-      >
-        Delete Post
-      </button>
-    </>
-  )
-}
-
-const PostListItem = (props: Post) => {
+const PostListItem = ({ id, title, body, authorId }: Post) => {
   const user = useUser()
   const queryClient = useQueryClient()
-  const { id, title, body, authorId } = props
 
   const postLink = `/posts/${id}`
 
@@ -54,7 +39,17 @@ const PostListItem = (props: Post) => {
           </button>
         </Link>
         {user.user?.id === authorId ? (
-          <DeleteButton handleDelete={handleDelete} mutation={mutation} />
+          // <DeleteButton handleDelete={handleDelete} mutation={mutation} />
+          <>
+            <br />
+            <button
+              onClick={() => handleDelete}
+              disabled={mutation.isLoading}
+              className="p-2 m-1 rounded-md bg-red-500 text-xs"
+            >
+              Delete Post
+            </button>
+          </>
         ) : null}
       </div>
     </div>
