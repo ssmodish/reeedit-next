@@ -7,7 +7,7 @@ import axios from 'axios'
 import EditPostForm from '../../../components/EditPostForm'
 
 const getPostById = async (postId: string) => {
-  const res = await axios.get(`http://localhost:3000/api/posts/${postId}`)
+  const res = await axios.get(`/api/posts/${postId}`)
   return res.data
 }
 
@@ -51,7 +51,7 @@ const Post = () => {
           <div className="mb-2">
             <h1 className="text-2xl mb-2 font-semibold">{data.title}</h1>
             <p>{data.body}</p>
-            {user.user?.id === data.authorId ? (
+            {user.user?.id === data.userId ? (
               <>
                 <button
                   className="p-2 m-1 rounded-md bg-blue-300"

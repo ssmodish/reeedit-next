@@ -3,7 +3,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 
 const MainHeader = () => {
   return (
-    <header className="bg-green-100 drop-shadow">
+    <header className="bg-slate-400 drop-shadow">
       <div className="container mx-auto flex justify-between py-3 mb-3">
         <div>
           <Link href="/">

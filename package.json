@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,7 +12,8 @@
     "test": "jest",
     "test:ci": "jest --ci",
     "pre-commit": "pnpm run lint --fix && git add -A .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev:db": "pscale connect pscale develop"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.0",

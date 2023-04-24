@@ -5,7 +5,7 @@ import PostListItem from '../PostListItem/PostListItem'
 
 const fetchPosts = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/posts')
+    const res = await axios.get('/api/posts')
     return res.data
   } catch (error) {
     console.log(error)
@@ -18,9 +18,10 @@ const PostList = () => {
   return (
     <div className="container mx-auto">
       <ul>
-        {query.data?.map((post: Post) => (
-          <PostListItem key={post.id} {...post} />
-        ))}
+        {query.data &&
+          query.data?.map((post: Post) => (
+            <PostListItem key={post.id} {...post} />
+          ))}
       </ul>
     </div>
   )

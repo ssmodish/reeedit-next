@@ -12,7 +12,7 @@ const PostListItem = ({ id, title, body, userId }: Post) => {
 
   const mutation = useMutation({
     mutationFn: (postId) => {
-      return axios.post('http://localhost:3000/api/posts/deletePost', postId)
+      return axios.post('/api/posts/deletePost', postId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })

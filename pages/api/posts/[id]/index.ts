@@ -3,12 +3,16 @@ import prisma from '../../../../lib/prisma'
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.id
-  const posts = await prisma.post.findUnique({
+  const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
   })
-  res.status(200).json(posts)
+  if (post) {
+    res.status(200).json(post)
+  } else {
+    res.status(404).json({ post: [] })
+  }
 }
 
 export default handler

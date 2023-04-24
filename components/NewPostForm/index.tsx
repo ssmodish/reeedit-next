@@ -12,7 +12,7 @@ const NewPostForm = () => {
 
   const mutation = useMutation({
     mutationFn: (newPost) => {
-      return axios.post('http://localhost:3000/api/posts/addPost', newPost)
+      return axios.post('/api/posts/addPost', newPost)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
@@ -32,7 +32,7 @@ const NewPostForm = () => {
     <div>
       <h2 className="text-lg">Create New Post</h2>
       {mutation.isLoading ? (
-        'Adding post...'
+        <p>Adding post...</p>
       ) : (
         <>
           {mutation.isError ? (
@@ -77,8 +77,6 @@ const NewPostForm = () => {
           Create Post
         </button>
       </form>
-      <hr />
-      <br />
     </div>
   )
 }

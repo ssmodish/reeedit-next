@@ -15,10 +15,7 @@ const EditPostForm = ({ postId, editTitle, editBody, setEditPost }: EPost) => {
 
   const mutation = useMutation({
     mutationFn: (editPost) => {
-      return axios.post(
-        `http://localhost:3000/api/posts/${postId}/editPost`,
-        editPost
-      )
+      return axios.post(`/api/posts/${postId}/editPost`, editPost)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post', postId] })
@@ -34,9 +31,9 @@ const EditPostForm = ({ postId, editTitle, editBody, setEditPost }: EPost) => {
 
   return (
     <div>
-      <h2 className="text-lg">Edit Post</h2>
+      <h2 className="text-lg font-bold">Edit Post</h2>
       {mutation.isLoading ? (
-        'Updating post...'
+        <p>Updating post...</p>
       ) : (
         <>
           {mutation.isError ? (
@@ -48,27 +45,31 @@ const EditPostForm = ({ postId, editTitle, editBody, setEditPost }: EPost) => {
       {mutation.isSuccess ? <div>Post Updated!</div> : null}
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Title: </label>
-        <input
-          autoFocus
-          id="title"
-          type="text"
-          placeholder="Title of Post"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br />
-        <label htmlFor="body">Body: </label>
-        <input
-          id="body"
-          type="textarea"
-          placeholder="Body of post"
-          required
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-        />
-        <br />
+        <div className="flex flex-col">
+          <div className="mb-1">
+            <label htmlFor="title">Title: </label>
+            <input
+              autoFocus
+              id="title"
+              type="text"
+              placeholder="Title of Post"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="mb-1">
+            <label htmlFor="body">Body: </label>
+            <input
+              id="body"
+              type="textarea"
+              placeholder="Body of post"
+              required
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+            />
+          </div>
+        </div>
         <button
           type="submit"
           aria-label="Create Post"

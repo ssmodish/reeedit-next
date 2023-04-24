@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useUser } from '@clerk/nextjs'
 
 import PostList from '../../components/PostList/PostList'
@@ -17,7 +17,9 @@ const Posts = () => {
       </Head>
       {user.isSignedIn && <NewPostForm />}
       <h1>Posts:</h1>
-      <PostList />
+      <Suspense fallback={<p>Loading posts...</p>}>
+        <PostList />
+      </Suspense>
     </div>
   )
 }
